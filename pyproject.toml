@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reddit-link-status-checker"
+version = "1.0.0"
+description = "Reddit post/comment URL status checker with CLI and Streamlit UI."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "requests>=2.32.0",
+  "streamlit>=1.35.0",
+]
+
+[project.scripts]
+reddit-link-status-checker = "reddit_status_checker:main"
+reddit-link-status-ui = "launcher:main"
+
+[tool.setuptools]
+py-modules = ["reddit_status_checker", "launcher", "app"]
