@@ -16,6 +16,7 @@ dependencies = [
 [project.scripts]
 reddit-link-status-checker = "reddit_status_checker:main"
 reddit-link-status-ui = "launcher:main"
+reddit-link-status-ui-minimal = "launcher_minimal:main"
 
 [tool.setuptools]
-py-modules = ["reddit_status_checker", "launcher", "app"]
+py-modules = ["reddit_status_checker", "launcher", "launcher_minimal", "app", "app_minimal"]

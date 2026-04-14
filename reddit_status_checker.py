@@ -211,6 +211,23 @@ def _normalize_reddit_url(url: str) -> str:
 
     if parsed.netloc not in REDDIT_HOSTS:
         raise ValueError("URL is not a reddit.com link")
+
+    # Cloud-hosted environments sometimes cannot follow redd.it redirects reliably.
+    # Fallback: map `https://redd.it/<post_id>` directly to canonical post path.
+    if is_redd_it:
+        parts = [p for p in (parsed.path or "").split("/") if p]
+        token = parts[0] if parts else ""
+        # Only rewrite simple short-link shape like "/abc123".
+        if len(parts) == 1 and re.fullmatch(r"[A-Za-z0-9]+", token or ""):
+            parsed = ParseResult(
+                scheme="https",
+                netloc="www.reddit.com",
+                path=f"/comments/{token}",
+                params="",
+                query="",
+                fragment="",
+            )
+
     clean = ParseResult(
         scheme="https",
         netloc="www.reddit.com",

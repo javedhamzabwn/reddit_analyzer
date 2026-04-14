@@ -59,6 +59,7 @@ After install, users get two commands:
 
 - `reddit-link-status-checker` (CLI)
 - `reddit-link-status-ui` (Streamlit app launcher)
+- `reddit-link-status-ui-minimal` (minimal bright UI: status + subreddit + user extractor)
 
 ## 1) CLI usage
 
@@ -114,6 +115,12 @@ Run installed app:
 reddit-link-status-ui
 ```
 
+Run minimal duplicate app:
+
+```powershell
+reddit-link-status-ui-minimal
+```
+
 ### UI script usage (developer mode)
 
 Install deps manually:
@@ -126,6 +133,12 @@ Run UI:
 
 ```powershell
 streamlit run app.py
+```
+
+Minimal app script:
+
+```powershell
+streamlit run app_minimal.py
 ```
 
 ## 3) Deploy on Streamlit Community Cloud
