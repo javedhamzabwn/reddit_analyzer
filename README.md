@@ -1,53 +1,39 @@
-# Reddit Link Status Checker (CLI + Streamlit + EXE)
+# Reddit Link Status Checker
 
-A no-API-key **Reddit link checker** to verify whether Reddit post URLs and comment URLs are live, removed, deleted, or unavailable.
+Professional Reddit post/comment URL monitoring tool with:
+- CLI for automation and batch workflows
+- Streamlit UI (full and minimal variants)
+- Windows executable builds for non-technical users
 
-This project works as:
-- a **Python CLI tool**
-- a **Streamlit web app**
-- a **Windows EXE** (folder build and single-file build)
+Use this project to check whether Reddit links are live, removed, deleted, not found, restricted, or invalid, and to extract subreddit/user metadata without API credentials.
 
-If you searched for terms like **"Reddit link status checker"**, **"check deleted Reddit post"**, **"Reddit comment URL checker"**, **"Reddit post removed detector"**, or **"bulk Reddit URL status checker"**, this repository is built for that use case.
+## Core use cases
 
-It checks whether each URL is:
+- Reddit link status checker for post and comment URLs
+- Bulk Reddit URL audit from a text file
+- Subreddit metadata extraction (rules, moderators, widgets)
+- Reddit user profile and activity extraction
+- Export-ready CSV reports for ops, moderation, or growth teams
+
+## Status types
+
 - `live`
 - `removed`
 - `deleted`
 - `not_found`
+- `restricted`
 - `fetch_error`
 - `invalid_url`
 
-It also captures metadata (subreddit, author, posted date, score, comment count) and can export CSV + Markdown reports.
+## Project variants
 
-## Keywords this tool targets
+- **Full app**: `app.py` (all advanced tabs and workflows)
+- **Minimal app**: `app_minimal.py` (bright UI with 3 focused tabs)
+  - Live/Unlive Status Checker
+  - Subreddit Extractor
+  - User Info Extractor
 
-Reddit link checker, Reddit URL status checker, check if Reddit post is deleted, check if Reddit comment is removed, Reddit moderation status checker, bulk Reddit link audit, Reddit post status API alternative, Reddit thread extraction, Reddit comment extraction, Reddit export CSV.
-
-## Features
-
-- Check Reddit URLs as `live`, `removed`, `deleted`, `not_found`, `fetch_error`, or `invalid_url`
-- Process one URL or bulk lists from file
-- Export status results to CSV and Markdown
-- Optional full thread extraction (post + recursive comments)
-- Streamlit UI for non-technical users
-- Portable Windows executable builds
-
-### Full thread extraction (post body + comments)
-
-For each thread URL, the app and CLI can also pull from the same JSON response:
-
-- Post: title, full `selftext`, external `url`, domain, flair, NSFW/spoiler/locked/stickied, `score` / `ups` / `downs` / `upvote_ratio`, reported `num_comments`, permalink, thumbnail, edited flag.
-- Comments: recursive flatten with **depth**, **parent**, author, full **body** text, score, time, permalink, live/removed/deleted.
-
-Reddit often omits deep branches via `more` objects or caps listing size; the export includes a **note** when counts diverge. For 100% of comments you need the official API.
-
-## Why this works without Reddit API keys
-
-The tool uses Reddit's public `.json` endpoints, for example:
-- `https://www.reddit.com/r/<sub>/comments/<post_id>/.json`
-- `https://www.reddit.com/r/<sub>/comments/<post_id>/<slug>/<comment_id>/.json`
-
-## Quick install (recommended)
+## Installation
 
 Install directly from GitHub:
 
@@ -55,172 +41,145 @@ Install directly from GitHub:
 python -m pip install "git+https://github.com/javedhamzabwn/reddit_analyzer.git"
 ```
 
-After install, users get two commands:
+Installed commands:
 
 - `reddit-link-status-checker` (CLI)
-- `reddit-link-status-ui` (Streamlit app launcher)
-- `reddit-link-status-ui-minimal` (minimal bright UI: status + subreddit + user extractor)
+- `reddit-link-status-ui` (full Streamlit launcher)
+- `reddit-link-status-ui-minimal` (minimal Streamlit launcher)
 
-## 1) CLI usage
+## Quick start
 
-Single URL:
+### CLI
+
+Single URL check:
 
 ```powershell
 reddit-link-status-checker --url "https://www.reddit.com/r/test/comments/abc123/example_post/"
 ```
 
-### CLI script usage (developer mode)
+Batch from file:
 
 ```powershell
-python reddit_status_checker.py --url "https://www.reddit.com/r/test/comments/abc123/example_post/"
+reddit-link-status-checker --input-file urls.txt
 ```
 
-Multiple URLs:
+Thread extraction outputs:
 
 ```powershell
-python reddit_status_checker.py `
-  --url "https://www.reddit.com/r/test/comments/abc123/example_post/" `
-  --url "https://www.reddit.com/r/test/comments/abc123/example_post/def456/"
+reddit-link-status-checker --input-file urls.txt --extract-thread --json-limit 500
 ```
 
-From file (one URL per line):
+### Streamlit UI
 
-```powershell
-python reddit_status_checker.py --input-file urls.txt
-```
-
-Force type:
-
-```powershell
-python reddit_status_checker.py --input-file urls.txt --type comment
-```
-
-Custom output paths:
-
-```powershell
-python reddit_status_checker.py --input-file urls.txt --csv-out out.csv --md-out out.md
-```
-
-Full thread outputs (posts CSV, comments CSV, formatted Markdown, JSON bundle):
-
-```powershell
-python reddit_status_checker.py --input-file urls.txt --extract-thread --json-limit 500
-```
-
-## 2) UI usage (Streamlit)
-
-Run installed app:
+Full UI:
 
 ```powershell
 reddit-link-status-ui
 ```
 
-Run minimal duplicate app:
+Minimal UI:
 
 ```powershell
 reddit-link-status-ui-minimal
 ```
 
-### UI script usage (developer mode)
+## Developer mode
 
-Install deps manually:
+Install dependencies:
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-Run UI:
+Run full app:
 
 ```powershell
 streamlit run app.py
 ```
 
-Minimal app script:
+Run minimal app:
 
 ```powershell
 streamlit run app_minimal.py
 ```
 
-## 3) Deploy on Streamlit Community Cloud
+## Deployment options
 
-1. Push this project to GitHub (already done in your `reddit_analyzer` repo).
-2. Go to [https://share.streamlit.io](https://share.streamlit.io) and click **New app**.
-3. Select:
-   - **Repository**: `javedhamzabwn/reddit_analyzer`
-   - **Branch**: `main`
-   - **Main file path**: `app.py`
-4. Deploy.
+### Streamlit Community Cloud
 
-### Streamlit Cloud notes
+1. Push repository to GitHub
+2. Open [https://share.streamlit.io](https://share.streamlit.io)
+3. Create app and set:
+   - Repository: `javedhamzabwn/reddit_analyzer`
+   - Branch: `main`
+   - Main file: `app.py` or `app_minimal.py`
 
-- `requirements.txt` is already present and enough for deployment.
-- No secrets are required for basic status checking.
-- If you want a custom URL, add it in Streamlit app settings after deploy.
+### Google Cloud Run (recommended for production)
 
-## Build Windows EXE (no Python required on target PC)
+Run Streamlit with:
 
-You can package this app into a portable Windows app folder containing the `.exe` and all Python/runtime dependencies.
+```bash
+streamlit run app_minimal.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true
+```
 
-1. On a build machine with Python installed, run:
+Then deploy with `gcloud run deploy`.
+
+## Windows EXE builds
+
+### Folder build (faster startup)
 
 ```powershell
 build_exe.bat
 ```
 
-2. After build completes, share this folder:
+Share folder:
 
 ```text
 dist\RedditResearchWorkspace\
 ```
 
-3. End user runs:
-
-```text
-RedditResearchWorkspace.exe
-```
-
-### Single-file EXE option (no folder sharing)
-
-If you want to share just one file, run:
+### Single-file build (easier sharing)
 
 ```powershell
 build_exe_onefile.bat
 ```
 
-Output:
+Share file:
 
 ```text
 dist\RedditResearchWorkspace-OneFile.exe
 ```
 
-You can send this single `.exe` to users.
+## Recommended tools
 
-### Notes
+- **Python 3.10+**
+- **GitHub CLI (`gh`)** for release and repo automation
+- **Streamlit** for UI hosting
+- **PyInstaller** for Windows executable packaging
+- **Google Cloud Run** for managed production deployment
 
-- Build target is **Windows only** and should match target architecture (x64 -> x64).
-- First launch may take a little longer.
-- One-file EXE extracts runtime files to a temp directory at startup, so startup is usually slower than the folder (`--onedir`) build.
-- The app still opens in a browser tab (Streamlit UI), but no Python install is needed on the end-user machine.
+## Architecture summary
 
-In the UI (tabbed workspace):
-1. **Daily Scan**: presets + keyword finder (no API) + lead scoring + duplicate/repost grouping + improved comment extraction
-2. **Live Checker**: status-only checker with field selection
-3. **Post Viability**: checks if a new comment is likely possible now (status/lock + mod/bot/deleted signals + last comment time + subreddit rules snapshot)
-4. **Subreddit Extractor**: subreddit metadata/rules/moderators/widgets (best-effort)
-5. Every tab supports selecting fields and **Copy (TSV)** for direct Google Sheets paste
+- `reddit_status_checker.py`: core URL normalization, status inference, extraction logic
+- `app.py`: full Streamlit interface
+- `app_minimal.py`: simplified bright Streamlit interface
+- `launcher.py` / `launcher_minimal.py`: entrypoints for installed UI commands
+- `build_exe*.bat`: Windows packaging scripts
 
-## Notes
+## Notes and limitations
 
-- Works for `reddit.com`, `www.reddit.com`, `old.reddit.com`, `np.reddit.com`
-- For private/quarantined content, status may return `fetch_error` depending on Reddit response.
+- Supports `reddit.com`, `www.reddit.com`, `old.reddit.com`, `np.reddit.com`, and `redd.it`
+- Public endpoint behavior can vary by region/network/rate limits
+- Deep threads may include `more` placeholders; full comment completeness requires official API
+- Private or quarantined content may return `restricted` or `fetch_error`
 
 ## FAQ
 
-### Can I check many Reddit links at once?
-Yes. Use `--input-file` with one URL per line.
-
-### Can I use this without Reddit API credentials?
+### Can this run without Reddit API keys?
 Yes. It uses Reddit public JSON endpoints.
 
-### Can I share this with non-technical users?
-Yes. Use either Streamlit Cloud deployment or the EXE build.
+### Can I share with non-technical users?
+Yes. Use Streamlit deployment or the Windows EXE release artifact.
+
+### Why might hosted behavior differ from local?
+Network/rate limits/redirect behavior can differ by host. Recent updates include fallback handling for `redd.it` short links in cloud environments.
